@@ -1,0 +1,549 @@
+/* Standardstil för sidan */
+body {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.app-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Tillåter att apparna går till nästa rad */
+    gap: 30px; /* Minskad från 40px till 30px för att minska avståndet */
+    padding: 20px;
+    background-color: #f0f0f0; /* Ljus bakgrund för appcontainern */
+}
+
+.app {
+    text-align: center;
+    transition: transform 0.2s ease; /* Lägger till transition för bättre skalningsanimation */
+}
+
+.icon {
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s, filter 0.2s, box-shadow 0.2s ease;
+}
+
+.icon:active {
+    filter: brightness(0.7);
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.app p {
+    margin: 2px 0 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap; /* Förhindra att texten bryts till ny rad */
+    overflow: hidden; /* Förhindra att texten går utanför */
+    text-overflow: ellipsis; /* Visa "..." om texten är för lång */
+    background-color: transparent;
+    line-height: 1.4; /* Ger mer utrymme för texten */
+}
+
+/* Stilen för ghost-elementet */
+.drag-ghost {
+    opacity: 1;
+    background-color: transparent;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Skakningsanimation */
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(1deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-1deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.app.shake {
+    animation: shake 0.5s infinite;
+}
+
+/* Stil för knappen "Klar" */
+#stopEditMode {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#stopEditMode:hover {
+    background-color: #45a049;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Modal bakgrund */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    backdrop-filter: blur(4px); /* Lägg till en subtil bakgrundsblur */
+    overflow: auto; /* Tillåt skrollning om innehållet överstiger fönstrets höjd */
+}
+
+/* Modal innehåll */
+.modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 15px; /* Rundade hörn */
+    width: 90%;
+    max-width: 450px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Mjuk skugga */
+    text-align: center;
+    animation: fadeIn 0.4s; /* Animation när modalen öppnas */
+    max-height: 90vh; /* Sätter en maxhöjd för modalinnehållet */
+    overflow-y: auto; /* Skrollning om modalinnehållet blir för stort */
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Stängningsknapp */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* Flik-system */
+.tab {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px; /* Ökar avståndet under knapparna */
+    padding-bottom: 10px; /* Ökar avståndet mellan knapparna och strecket */
+}    
+
+.tab button {
+    background-color: #f9f9f9;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab button:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.tab button.active {
+    background-color: #4a86c6;
+    color: #fff;
+    border-radius: 12px; /* Rundade hörn för aktiva flikar */
+}
+
+/* Innehållet för flikarna */
+.tabcontent {
+    display: none;
+}
+
+.tabcontent.active {
+    display: block;
+}
+
+input[type="color"]:hover, select:hover {
+    border-color: #007bff;
+}
+
+/* Spara-knappen */
+/* Standard utgråad knapp */
+.save-button {
+    padding: 10px 20px;
+    background-color: #b8b8b8; /* Grå bakgrund */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: not-allowed; /* Inaktiverad, ej klickbar */
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s;
+    margin-top: 20px; 
+}
+
+/* När knappen blir aktiv (grön) */
+.save-button.active {
+    background-color: #18b300; /* Grön bakgrund */
+    cursor: pointer; /* Klickbar */
+    transform: translateY(0); /* Återställ eventuell tidigare transformation */
+}
+
+.save-button.active:hover {
+    background-color: #16a000; /* Mörkare grön på hover */
+    transform: translateY(-2px); /* Lyft upp knappen på hover */
+}
+
+.save-button.active:active {
+    transform: translateY(1px); /* Tryck ned knappen lite vid klick */
+}
+
+
+/* Förhandsvisning av färg */
+.color-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+/* Textetikett som visar vald färg */
+.color-value {
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 10px;
+}
+
+/* Dark Mode specifikt för färgval */
+.dark-mode .color-value {
+    color: #ccc;
+}
+
+/* Teckensnitt-väljare */
+.font-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Två kolumner */
+    gap: 20px; /* Mellanrum mellan knapparna */
+    margin-bottom: 30px; /* Justerar avståndet mellan dessa funktioner */
+}
+
+.font-box {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.font-box:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.font-box.active {
+    border-color: #007bff;
+    background-color: #e6f0ff;
+}
+
+
+/* Modal specifik styling för att låsa textfärgen till svart */
+.modal-content, .modal-content h1, .modal-content p, .modal-content label, .modal-content a, .modal-content button {
+    color: black; /* Tvinga textfärgen till svart inom modal */
+}
+
+/* Gör så att textetiketten inte reagerar på klick */
+label {
+    pointer-events: none;
+}
+
+/* Stäng av pekarhändelser på textetiketter */
+label[for="colorPicker"],
+label[for="textColorPicker"] {
+    pointer-events: none; /* Gör så att endast cirkeln är klickbar */
+}
+
+/* Standardstil för radioknappar */
+input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+
+/* Olika storlekar på app-ikoner */
+.app .icon {
+    transition: width 0.3s, height 0.3s; /* Lägg till en mjuk övergång när storleken ändras */
+}
+
+/* Små ikoner */
+.app.small .icon {
+    width: 80px;
+    height: 80px;
+}
+
+/* Medium ikoner */
+.app.medium .icon {
+    width: 120px;
+    height: 120px;
+}
+
+/* Stora ikoner */
+.app.large .icon {
+    width: 160px;
+    height: 160px;
+}
+
+/* Konsistent avstånd mellan text och ikon */
+.app p {
+    margin-top: 10px;
+    font-size: 1em; /* Håll textstorleken konsekvent */
+    text-align: center;
+}
+
+/* Styling för storleksval liknande teckensnittsväljaren */
+.size-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    gap: 20px; /* Mellanrum mellan knapparna */
+}
+
+.size-box {
+    width: 30%;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.size-box:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.size-box.active {
+    border-color: #007bff;
+    background-color: #e6f0ff;
+}
+
+/* Stil för Pickr-färgväljare */
+.color-picker-background,
+.color-picker-text {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-picker-background:hover,
+.color-picker-text:hover {
+    border-color: #007bff; /* Ändra kantfärg när musen hovrar över */
+}
+
+.color-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.color-picker-container label {
+    margin-bottom: 30px; /* Skapar utrymme mellan text och cirkel */
+    font-size: 16px;
+}
+
+.color-picker-container {
+    display: flex;
+    flex-direction: column; /* Gör att text och cirkel ligger vertikalt */
+    align-items: center;
+}
+
+.color-picker-row {
+    display: flex;
+    justify-content: center; /* Centrerar hela raden */
+    gap: 50px; /* Minskat gapet mellan färgvalen för att få dem närmare varandra */
+    margin-bottom: 20px;
+    pointer-events: auto !important; /* Se till att färgväljaren är klickbar */
+}
+
+
+
+.pcr-app {
+    z-index: 9999; /* Gör så att den ligger överst */
+    position: absolute; /* Positionen kommer att vara relativ till modalens innehåll */
+    top: auto; /* Ta bort den fasta centreringspositionen */
+    left: auto; /* Samma här */
+    transform: none; /* Ingen global centrerad transformering */
+}
+
+.pcr-app .pcr-save {
+    background-color: #28a745 !important; /* Grön bakgrund */
+    color: white !important; /* Vit text */
+    border: none; /* Ta bort kantlinjen */
+    border-radius: 5px; /* Rundade hörn */
+    outline: none; /* Ta bort standardfokuseringsringen */
+}
+
+.pcr-app .pcr-save:hover {
+    background-color: #218838 !important; /* Mörkare grön på hover */
+}
+
+.pcr-app .pcr-save:active {
+    background-color: #1e7e34 !important; /* Ännu mörkare grön när nedtryckt */
+}
+
+/* För att ändra fokuseringsringen när knappen är i fokus */
+.pcr-app .pcr-save:focus {
+    outline: 2px solid #28a745 !important; /* Grön fokuseringsring */
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5) !important; /* Lägg till grön skugga */
+}
+
+
+/* Lägg till en separator mellan sektionerna i Utseende-fliken */
+.appearance-section {
+    padding-bottom: 20px;  /* Skapar utrymme under varje sektion */
+    margin-bottom: 20px;   /* Skapar avstånd mellan sektionerna */
+    border-bottom: 1px solid #ccc;  /* Skapar strecket under varje sektion */
+}
+
+.language-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.language-box {
+    width: 45%; /* Justerar storlek så de passar snyggt på rad */
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 0 10px; /* Lägg till margin för att skapa mellanrum mellan knapparna */
+}
+
+.language-box:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.language-box.active {
+    border-color: #007bff;
+    background-color: #e6f0ff;
+}
+
+.reset-button {
+    padding: 10px 20px;
+    background-color: #dc3545; /* Röd färg för att indikera varning */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.reset-button:hover {
+    background-color: #c82333; /* Mörkare röd vid hover */
+}
+
+/* Modal för bekräftelse */
+#confirmationModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#confirmationModal .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#confirmationModal h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+#confirmationModal p {
+    margin-bottom: 20px;
+}
+
+#confirmationModal .confirm-button, #confirmationModal .cancel-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#confirmationModal .confirm-button {
+    background-color: #d9534f;
+    color: white;
+}
+
+#confirmationModal .cancel-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+#confirmationModal .confirm-button:hover {
+    background-color: #c9302c;
+}
+
+#confirmationModal .cancel-button:hover {
+    background-color: #5a6268;
+}
+
+
+
+
+ 
+  

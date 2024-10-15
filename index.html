@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/> <!-- Pickr theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr@1.8.0/dist/pickr.min.js"></script>
+
+    <title>Välj din app</title>
+</head>
+<body>
+    <h1>Välj din app</h1>
+    <div class="app-container" id="appContainer">
+        <div class="app" id="app1" draggable="true">
+            <a href="https://www.netflix.com">
+                <img src="images/netflix.png" alt="Netflix" class="icon">
+            </a>
+            <p>Netflix</p>
+        </div>
+        <div class="app" id="app2" draggable="true">
+            <a href="https://teams.microsoft.com">
+                <img src="images/Teams.png" alt="Teams" class="icon">
+            </a>
+            <p>Teams</p>
+        </div>
+        <div class="app" id="app3" draggable="true">
+            <a href="https://open.spotify.com/">
+                <img src="images/spotify.png" alt="Spotify" class="icon">
+            </a>
+            <p>Spotify</p>
+        </div>
+        <div class="app" id="app4" draggable="true">
+            <a href="http://webtv-new.iptvsmarters.com/">
+                <img src="images/iptv.png" alt="IPTV" class="icon">
+            </a>
+            <p>IPTV</p>
+        </div>
+        <div class="app" id="settingsApp" draggable="true">
+            <img src="images/settings.png" alt="Settings" class="icon">
+            <p>Inställningar</p>
+        </div>
+    </div>
+
+    <!-- Knappen "Klar" som visas när redigeringsläget är aktivt -->
+    <button id="stopEditMode" class="hidden">Klar</button>
+
+    <!-- Modal för inställningar -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Inställningar</h2>
+    
+            <!-- Flik-knappar -->
+            <div class="tab">
+                <button class="tablinks active" onclick="openTab(event, 'Appearance')">Utseende</button>
+                <button class="tablinks" onclick="openTab(event, 'Language')">Språk</button>
+                <button class="tablinks" onclick="openTab(event, 'About')">Om</button> 
+            </div>
+    
+            <!-- Sektion för Utseende -->
+            <div id="Appearance" class="tabcontent active">
+                <h3>Utseende:</h3>
+            
+                <!-- Sektion för bakgrundsfärg och textfärg -->
+                <div class="appearance-section">
+                    <div class="color-picker-row">
+                        <div class="color-picker-container">
+                            <label for="colorPicker">Välj bakgrundsfärg:</label>
+                            <div class="color-picker-background color-preview" id="colorPreview"></div>
+                        </div>
+                    
+                        <div class="color-picker-container">
+                            <label for="textColorPicker">Välj textfärg:</label>
+                            <div class="color-picker-text color-preview" id="textColorPreview"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sektion för appstorlek -->
+                <div class="appearance-section">
+                    <h4>Välj appstorlek:</h4>
+                    <div class="size-selector">
+                        <div class="size-box" data-size="small">Små</div>
+                        <div class="size-box active" data-size="medium">Mellan</div>
+                        <div class="size-box" data-size="large">Stora</div>
+                    </div>
+                </div>
+            
+                <!-- Sektion för teckensnitt -->
+                <div class="appearance-section">
+                    <h4 id="fontFamilyLabel">Välj teckensnitt:</h4>
+                    <div class="font-selector">
+                        <div class="font-box" data-font="'Open Sans', sans-serif" style="font-family: 'Open Sans', sans-serif;">Open Sans</div>
+                        <div class="font-box" data-font="Arial, sans-serif" style="font-family: Arial, sans-serif;">Arial</div>
+                        <div class="font-box" data-font="'Courier New', monospace" style="font-family: 'Courier New', monospace;">Courier New</div>
+                        <div class="font-box" data-font="'Times New Roman', serif" style="font-family: 'Times New Roman', serif;">Times New Roman</div>
+                        <div class="font-box" data-font="'Roboto', sans-serif" style="font-family: 'Roboto', sans-serif;">Roboto</div>
+                        <div class="font-box" data-font="'Comic Sans MS', cursive" style="font-family: 'Comic Sans MS', cursive;">Comic Sans MS</div> <!-- Ny font tillagd -->
+                    </div>
+                </div>
+            </div>
+
+                
+            
+                <!-- Sektion för Språk -->
+                <div id="Language" class="tabcontent">
+                    <h3>Välj språk:</h3>
+                    <div class="language-selector">
+                        <div class="language-box" data-language="sv">Svenska</div>
+                        <div class="language-box" data-language="en">Engelska</div>
+                    </div>
+                </div>
+
+                <!-- Sektion för Om -->
+                <div id="About" class="tabcontent">
+                    <h3>Om Appen</h3>
+                    <p>Version 1.0.0</p>
+                    <button id="resetButton" class="reset-button">Återställ till standardinställningar</button>
+                </div>
+
+                <!-- Bekräftelsemodal för återställning -->
+                <div id="confirmationModal" class="modal">
+                    <div class="modal-content">
+                         <h2>Är du säker?</h2>
+                            <p>Vill du verkligen återställa alla inställningar till standardvärden?</p>
+                        <button id="confirmReset" class="confirm-button">Ja</button>
+                        <button id="cancelReset" class="cancel-button">Nej</button>
+                    </div>
+                </div>
+
+            
+
+        
+    
+            <button class="save-button">Spara</button>
+        </div>
+    </div>
+
+    <!-- Länka JavaScript-filer -->
+    <script src="appManager.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>
