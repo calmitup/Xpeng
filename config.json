@@ -7,7 +7,7 @@
 
   "translations": {
     "sv": {
-      "title": "Välj din app",
+      "title": "Välkomen",
       "settings": "Inställningar",
       "appearance": "Utseende",
       "language": "Språk",
@@ -37,10 +37,11 @@
       "confirmationTitle": "Är du säker?",
       "confirmationMessage": "Vill du verkligen återställa alla inställningar till standardvärden?",
       "confirmReset": "Ja",
-      "cancelReset": "Nej"
+      "cancelReset": "Nej",
+      "userTab": "Användare"
     },
     "en": {
-      "title": "Choose your app",
+      "title": "Welcome",
       "settings": "Settings",
       "appearance": "Appearance",
       "language": "Language",
@@ -70,7 +71,8 @@
       "confirmationTitle": "Are you sure?",
       "confirmationMessage": "Do you really want to reset all settings to default values?",
       "confirmReset": "Yes",
-      "cancelReset": "No"
+      "cancelReset": "No",
+      "userTab": "User"
     }
   }
 }

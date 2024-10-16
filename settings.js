@@ -16,6 +16,74 @@ var tempIconSize = localStorage.getItem('iconSize') || 'medium';
 var translations = {};
 var defaultLanguage = 'sv'; // Temporär standard, uppdateras när config.json laddas
 
+
+//Startup Hemsida
+document.addEventListener('DOMContentLoaded', function() {
+    const startupScreen = document.getElementById('startup-screen');
+    const startupLogo = document.getElementById('startup-logo');
+
+    // Tonar in logotypen efter sidan har laddats
+    setTimeout(() => {
+        startupLogo.style.opacity = 1;
+    }, 500); // Vänta 0,5 sekunder innan logotypen tonas in
+
+    // Tar bort startup-skärmen efter några sekunder
+    setTimeout(() => {
+        startupScreen.classList.add('fade-out');
+    }, 3000); // Vänta 3 sekunder innan skärmen försvinner
+
+    // Ta bort startup-skärmen från DOM efter animationen
+    setTimeout(() => {
+        startupScreen.style.display = 'none';
+    }, 4000); // Ta bort helt efter 4 sekunder
+});
+
+// Kontrollera om sidan redan har laddats tidigare i den här sessionen
+window.addEventListener('DOMContentLoaded', function () {
+    const hasVisited = localStorage.getItem('hasVisited');
+    
+    // Om användaren inte har besökt sidan tidigare, visa "startup"-skärmen
+    if (!hasVisited) {
+        document.getElementById('startup-screen').style.display = 'flex';
+        
+        // Spara en flagga i localStorage att användaren har besökt sidan
+        localStorage.setItem('hasVisited', 'true');
+        
+        // Efter några sekunder, döljer vi "startup"-skärmen
+        setTimeout(() => {
+            document.getElementById('startup-screen').style.display = 'none';
+        }, 3000); // Visar skärmen i 3 sekunder
+    } else {
+        // Om användaren redan har besökt sidan, döljer vi "startup"-skärmen direkt
+        document.getElementById('startup-screen').style.display = 'none';
+    }
+});
+
+window.addEventListener('DOMContentLoaded', function () {
+    const lastVisit = localStorage.getItem('lastVisit');
+    const currentTime = new Date().getTime();
+    const oneHour = 10 * 1000; // 60 * 60 * 1000; En timme i millisekunder           10 * 1000; för test
+
+    // Om det har gått mer än en timme sedan sista besöket, eller användaren aldrig har besökt sidan
+    if (!lastVisit || (currentTime - lastVisit) > oneHour) {
+        document.getElementById('startup-screen').style.display = 'flex';
+
+        // Spara aktuell tid som senaste besök
+        localStorage.setItem('lastVisit', currentTime);
+        
+        // Visa "startup"-skärmen i några sekunder
+        setTimeout(() => {
+            document.getElementById('startup-screen').style.display = 'none';
+        }, 3000); // Visar skärmen i 3 sekunder
+    } else {
+        // Om det har gått mindre än en timme, döljer vi "startup"-skärmen direkt
+        document.getElementById('startup-screen').style.display = 'none';
+    }
+});
+
+
+
+
 // Hämta språkinställningar från config.json
 fetch('config.json')
     .then(response => response.json())
@@ -42,6 +110,7 @@ function applyLanguage(language) {
         appearanceTab: document.querySelector('button[onclick="openTab(event, \'Appearance\')"]'),
         languageTab: document.querySelector('button[onclick="openTab(event, \'Language\')"]'),
         aboutTab: document.querySelector('button[onclick="openTab(event, \'About\')"]'),
+        userTab: document.querySelector('button[onclick="openTab(event, \'User\')"]'),
         backgroundColorLabel: document.querySelector('label[for="colorPicker"]'),
         textColorLabel: document.querySelector('label[for="textColorPicker"]'),
         appSizeLabel: document.querySelector('.appearance-section h4:nth-of-type(1)'),
@@ -68,6 +137,7 @@ function applyLanguage(language) {
     if (textElements.appearanceTab) textElements.appearanceTab.textContent = translations[language].appearance;
     if (textElements.languageTab) textElements.languageTab.textContent = translations[language].language;
     if (textElements.aboutTab) textElements.aboutTab.textContent = translations[language].about;
+    if (textElements.userTab) textElements.userTab.textContent = translations[language].userTab; 
     if (textElements.saveButton) textElements.saveButton.textContent = translations[language].save;
     if (textElements.backgroundColorLabel) textElements.backgroundColorLabel.textContent = translations[language].backgroundColor;
     if (textElements.textColorLabel) textElements.textColorLabel.textContent = translations[language].textColor;
@@ -744,20 +814,13 @@ function resetSettings() {
     localStorage.removeItem('fontFamily');
     localStorage.removeItem('iconSize');
     localStorage.removeItem('language');
+    
+    // Ta bort 'hasVisited' från localStorage så att startup-skärmen visas igen
+    localStorage.removeItem('hasVisited');
 
-    // Ladda om standardinställningarna från config.json
-    loadDefaultSettings();
-
-    // Uppdatera UI med de nya värdena från config.json
-    updateUIWithNewValues();
-
-    // Inaktivera spara-knappen igen
-    disableSaveButton();
-
-    hideConfirmationModal(); // Stäng bekräftelsemodulen
-    alert('Inställningar återställda till standardvärden!');
+    // Ladda om sidan för att visa startup-skärmen igen
+    window.location.reload();
 }
-
 
 // Lägg till händelsehanterare för återställningsknappen
 document.getElementById('resetButton').addEventListener('click', showConfirmationModal);
@@ -766,11 +829,6 @@ document.getElementById('resetButton').addEventListener('click', showConfirmatio
 document.getElementById('confirmReset').addEventListener('click', resetSettings);
 document.getElementById('cancelReset').addEventListener('click', hideConfirmationModal);
 
-// Kör funktionen vid laddning av sidan för att sätta initiala värden om de inte redan finns
-window.addEventListener('DOMContentLoaded', () => {
-    loadDefaultSettings(); // Ladda standardinställningarna om inga värden finns i localStorage
-    updateUIWithNewValues(); // Uppdatera UI baserat på nuvarande inställningar
-});
 
 
 
