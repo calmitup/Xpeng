@@ -62,7 +62,7 @@ window.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('DOMContentLoaded', function () {
     const lastVisit = localStorage.getItem('lastVisit');
     const currentTime = new Date().getTime();
-    const oneHour = 10 * 1000; // 60 * 60 * 1000; En timme i millisekunder           10 * 1000; för test
+    const oneHour = 60 * 60 * 1000; // 60 * 60 * 1000; En timme i millisekunder           10 * 1000; för test
 
     // Om det har gått mer än en timme sedan sista besöket, eller användaren aldrig har besökt sidan
     if (!lastVisit || (currentTime - lastVisit) > oneHour) {
@@ -322,14 +322,17 @@ document.querySelectorAll('.size-box').forEach(box => {
     });
 });
 
+
 // Hantera teckensnittsval och uppdatera bara temporära variabler (ingen direkt förändring)
 document.querySelectorAll('.font-box').forEach(box => {
     box.addEventListener('click', function() {
         document.querySelectorAll('.font-box').forEach(box => box.classList.remove('active'));
         this.classList.add('active');
-        tempFontFamily = this.getAttribute('data-font'); // Uppdatera temporär variabel
+        tempFontFamily = this.getAttribute('data-font'); // Uppdatera endast temporär variabel, inte font på sidan
     });
 });
+
+
 
 // Spara inställningar och tillämpa direkt
 saveButton.addEventListener('click', function() {
@@ -342,7 +345,7 @@ saveButton.addEventListener('click', function() {
     applyLanguage(tempLanguage); // Tillämpa det valda språket
 
     applyTheme(); // Tillämpa ändringarna
-    modal.style.display = "none"; // Stäng modal
+    //modal.style.display = "none"; // Stäng modal
 });
 
 // När sidan laddas, återställ färger, storlek och teckensnitt från localStorage
@@ -362,17 +365,20 @@ window.addEventListener('DOMContentLoaded', function() {
     document.querySelector(`.font-box[data-font="${tempFontFamily}"]`).classList.add('active');
 });
 
-// Funktion för att tillämpa tema
+// Funktion för att tillämpa temat och inställningar på sidan
 function applyTheme() {
     document.body.style.backgroundColor = tempBackgroundColor;
     document.body.style.color = tempTextColor;
     document.body.style.fontFamily = tempFontFamily;
 
-    // Uppdatera app-storlek
+    // Uppdatera appstorlek
     document.querySelectorAll('.app').forEach(app => {
         app.classList.remove('small', 'medium', 'large');
         app.classList.add(tempIconSize);
     });
+
+    // Se till att inställningsrutan alltid använder "Open Sans"
+    document.querySelector('.modal-content').style.fontFamily = "'Open Sans', sans-serif";
 }
 
 // Tillämpa temat baserat på sparade färger
@@ -828,9 +834,3 @@ document.getElementById('resetButton').addEventListener('click', showConfirmatio
 // Lägg till händelsehanterare för bekräftelseknapparna
 document.getElementById('confirmReset').addEventListener('click', resetSettings);
 document.getElementById('cancelReset').addEventListener('click', hideConfirmationModal);
-
-
-
-
-
-

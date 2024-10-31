@@ -278,6 +278,7 @@ input[type="color"]:hover, select:hover {
 /* Modal specifik styling för att låsa textfärgen till svart */
 .modal-content, .modal-content h1, .modal-content p, .modal-content label, .modal-content a, .modal-content button {
     color: black; /* Tvinga textfärgen till svart inom modal */
+    font-family: 'Open Sans', sans-serif !important;
 }
 
 /* Gör så att textetiketten inte reagerar på klick */
